@@ -1,6 +1,11 @@
 package com.smartcommunity.pelayanan_masyarakat.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pengaduan")
@@ -24,6 +29,18 @@ public class Pengaduan extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kategori_id", nullable = false)
     private Kategori kategori;
+
+    @Column(columnDefinition = "TEXT")
+    private String tanggapanAdm;
+
+    // Tambahkan getter/setter-nya
+    public String getTanggapanAdm() {
+        return tanggapanAdm;
+    }
+
+    public void setTanggapanAdm(String tanggapanAdm) {
+        this.tanggapanAdm = tanggapanAdm;
+    }
 
     public String getJudul() {
         return judul;

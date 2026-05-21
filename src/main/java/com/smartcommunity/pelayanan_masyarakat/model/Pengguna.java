@@ -1,7 +1,12 @@
 package com.smartcommunity.pelayanan_masyarakat.model;
 
-import jakarta.persistence.*;
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pengguna")
@@ -13,6 +18,17 @@ public class Pengguna extends Akun {
     // Relasi One-to-Many (1 Pengguna bisa membuat banyak Pengaduan)
     @OneToMany(mappedBy = "pengguna", cascade = CascadeType.ALL)
     private List<Pengaduan> listPengaduan;
+
+    @OneToMany(mappedBy = "pengguna", cascade = CascadeType.ALL)
+    private List<Kendaraan> listKendaraan;
+
+    public List<Kendaraan> getListKendaraan() {
+        return listKendaraan;
+    }
+
+    public void setListKendaraan(List<Kendaraan> listKendaraan) {
+        this.listKendaraan = listKendaraan;
+    }
 
     public String getNik() {
         return nik;
