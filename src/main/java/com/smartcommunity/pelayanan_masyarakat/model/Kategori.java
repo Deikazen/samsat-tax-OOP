@@ -1,6 +1,11 @@
 package com.smartcommunity.pelayanan_masyarakat.model;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "kategori")
@@ -11,6 +16,9 @@ public class Kategori extends BaseEntity {
 
     @Column(length = 500)
     private String deskripsi;
+
+    @ManyToMany(mappedBy = "listKategori")
+    private List<Pengaduan> listPengaduan;
 
     public String getNamaKategori() {
         return namaKategori;
@@ -29,5 +37,13 @@ public class Kategori extends BaseEntity {
 
     public void setDeskripsi(String deskripsi) {
         this.deskripsi = deskripsi;
+    }
+
+    public List<Pengaduan> getListPengaduan() {
+        return listPengaduan;
+    }
+
+    public void setListPengaduan(List<Pengaduan> listPengaduan) {
+        this.listPengaduan = listPengaduan;
     }
 }

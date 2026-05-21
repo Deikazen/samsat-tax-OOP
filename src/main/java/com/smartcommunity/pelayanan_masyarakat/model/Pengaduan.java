@@ -1,9 +1,13 @@
 package com.smartcommunity.pelayanan_masyarakat.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -25,10 +29,13 @@ public class Pengaduan extends BaseEntity {
     @JoinColumn(name = "pengguna_id", nullable = false)
     private Pengguna pengguna;
 
-    // Relasi Many-to-One (Banyak pengaduan bisa masuk ke 1 kategori)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "kategori_id", nullable = false)
-    private Kategori kategori;
+    @ManyToMany
+    @JoinTable(
+            name = "pengaduan_kategori", // Nama tabel perantara yang akan dibuat otomatis
+            joinColumns = @JoinColumn(name = "pengaduan_id"),
+            inverseJoinColumns = @JoinColumn(name = "kategori_id")
+    )
+    private List<Kategori> listKategori;
 
     @Column(columnDefinition = "TEXT")
     private String tanggapanAdm;
@@ -80,11 +87,11 @@ public class Pengaduan extends BaseEntity {
         this.pengguna = pengguna;
     }
 
-    public Kategori getKategori() {
-        return kategori;
+    public List<Kategori> getListKategori() {
+        return listKategori;
     }
 
-    public void setKategori(Kategori kategori) {
-        this.kategori = kategori;
+    public void setListKategori(List<Kategori> listKategori) {
+        this.listKategori = listKategori;
     }
 }
