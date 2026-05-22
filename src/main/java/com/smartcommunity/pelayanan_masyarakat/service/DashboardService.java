@@ -1,5 +1,8 @@
 package com.smartcommunity.pelayanan_masyarakat.service;
 
-public @interface DashboardService {
+import java.util.Map;
 
+public interface DashboardService {
+
+    Map<String, Object> getAllSummary();
 }

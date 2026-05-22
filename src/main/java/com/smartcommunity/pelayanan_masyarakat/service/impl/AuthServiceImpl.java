@@ -2,58 +2,54 @@ package com.smartcommunity.pelayanan_masyarakat.service.impl;
 
 import com.smartcommunity.pelayanan_masyarakat.exception.DataTidakDitemukanException;
 import com.smartcommunity.pelayanan_masyarakat.model.Admin;
+import com.smartcommunity.pelayanan_masyarakat.model.Akun;
 import com.smartcommunity.pelayanan_masyarakat.model.Pengguna;
-import com.smartcommunity.pelayanan_masyarakat.repository.AdminRepository;
-import com.smartcommunity.pelayanan_masyarakat.repository.PenggunaRepository;
+import com.smartcommunity.pelayanan_masyarakat.repository.AkunRepository; // Menggunakan 1 repo tunggal
 import com.smartcommunity.pelayanan_masyarakat.service.AuthService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final PenggunaRepository penggunaRepo;
-    private final AdminRepository adminRepo;
+    private final AkunRepository akunRepo;
 
-    public AuthServiceImpl(PenggunaRepository penggunaRepo, AdminRepository adminRepo) {
-        this.penggunaRepo = penggunaRepo;
-        this.adminRepo = adminRepo;
+    public AuthServiceImpl(AkunRepository akunRepo) {
+        this.akunRepo = akunRepo;
     }
 
     @Override
     public Pengguna registerPengguna(Pengguna pengguna) {
-        // Bisa tambahkan pengecekan apakah email/NIK sudah ada
-        return penggunaRepo.save(pengguna);
+        return akunRepo.save(pengguna); // Polymorphism: Menerima class anak
     }
 
     @Override
     public Admin registerAdmin(Admin admin) {
-        return adminRepo.save(admin);
+        return akunRepo.save(admin);
     }
 
     @Override
     public Pengguna loginPengguna(Pengguna pengguna) {
-        Pengguna userDb = penggunaRepo.findByEmail(pengguna.getEmail())
+        Akun akunDb = akunRepo.findByEmail(pengguna.getEmail())
                 .orElseThrow(() -> new DataTidakDitemukanException("Email warga tidak terdaftar!"));
 
-        if (!userDb.getPassword().equals(pengguna.getPassword())) {
+        if (!akunDb.getPassword().equals(pengguna.getPassword())) {
             throw new IllegalArgumentException("Password warga salah!");
         }
 
-        userDb.login(); // Pemanggilan method polymorphism
-        return userDb;
+        akunDb.login();
+        return (Pengguna) akunDb; // WAJIB DI-CASTING KE PENGGUNA
     }
 
     @Override
     public Admin loginAdmin(Admin admin) {
-        // Asumsi kamu membuat method findByEmail di AdminRepository
-        Admin adminDb = adminRepo.findByEmail(admin.getEmail())
+        Akun akunDb = akunRepo.findByEmail(admin.getEmail())
                 .orElseThrow(() -> new DataTidakDitemukanException("Email admin tidak terdaftar!"));
 
-        if (!adminDb.getPassword().equals(admin.getPassword())) {
+        if (!akunDb.getPassword().equals(admin.getPassword())) {
             throw new IllegalArgumentException("Password admin salah!");
         }
 
-        adminDb.login(); // Pemanggilan method polymorphism
-        return adminDb;
+        akunDb.login();
+        return (Admin) akunDb; // WAJIB DI-CASTING KE ADMIN
     }
 }

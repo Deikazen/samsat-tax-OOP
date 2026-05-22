@@ -2,10 +2,9 @@ package com.smartcommunity.pelayanan_masyarakat.service.impl;
 
 import com.smartcommunity.pelayanan_masyarakat.repository.LayananRepository;
 import com.smartcommunity.pelayanan_masyarakat.repository.PengaduanRepository;
-import com.smartcommunity.pelayanan_masyarakat.repository.PenggunaRepository;
+import com.smartcommunity.pelayanan_masyarakat.repository.AkunRepository; // 1. GANTI IMPORT INI
 import com.smartcommunity.pelayanan_masyarakat.service.DashboardService;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,24 +13,26 @@ public class DashboardServiceImpl implements DashboardService {
 
     private final PengaduanRepository pengaduanRepo;
     private final LayananRepository layananRepo;
-    private final PenggunaRepository penggunaRepo;
+    private final AkunRepository akunRepo; // 2. GANTI DARI PenggunaRepository KE AkunRepository
 
+    // 3. SESUAIKAN CONSTRUCTOR DICTION INJECTION
     public DashboardServiceImpl(PengaduanRepository pengaduanRepo,
             LayananRepository layananRepo,
-            PenggunaRepository penggunaRepo) {
+            AkunRepository akunRepo) {
         this.pengaduanRepo = pengaduanRepo;
         this.layananRepo = layananRepo;
-        this.penggunaRepo = penggunaRepo;
+        this.akunRepo = akunRepo;
     }
 
     @Override
     public Map<String, Object> getAllSummary() {
         Map<String, Object> summary = new HashMap<>();
 
-        // Menghitung total data dari masing-masing repository
         summary.put("totalPengaduan", pengaduanRepo.count());
         summary.put("totalLayananPKB", layananRepo.count());
-        summary.put("totalWargaTerdaftar", penggunaRepo.count());
+
+        // 4. GANTI PANGGILAN METHOD DI SINI
+        summary.put("totalWargaTerdaftar", akunRepo.countPengguna());
 
         return summary;
     }
