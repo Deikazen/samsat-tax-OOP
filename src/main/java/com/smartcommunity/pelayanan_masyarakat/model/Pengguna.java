@@ -2,6 +2,8 @@ package com.smartcommunity.pelayanan_masyarakat.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; // agar ga looping
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,9 +18,11 @@ public class Pengguna extends Akun {
     private String nik;
 
     // Relasi One-to-Many (1 Pengguna bisa membuat banyak Pengaduan)
+    @JsonIgnore  // agar ga looping
     @OneToMany(mappedBy = "pengguna", cascade = CascadeType.ALL)
     private List<Pengaduan> listPengaduan;
 
+    @JsonIgnore  // agar ga looping
     @OneToMany(mappedBy = "pengguna", cascade = CascadeType.ALL)
     private List<Kendaraan> listKendaraan;
 

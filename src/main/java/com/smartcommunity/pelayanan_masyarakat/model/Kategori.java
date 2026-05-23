@@ -2,6 +2,8 @@ package com.smartcommunity.pelayanan_masyarakat.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; // agar ga looping
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -17,6 +19,7 @@ public class Kategori extends BaseEntity {
     @Column(length = 500)
     private String deskripsi;
 
+    @JsonIgnore  // agar ga looping
     @ManyToMany(mappedBy = "listKategori")
     private List<Pengaduan> listPengaduan;
 
