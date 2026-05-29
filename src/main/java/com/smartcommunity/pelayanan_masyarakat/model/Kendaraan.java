@@ -17,6 +17,9 @@ public class Kendaraan extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String merek;
 
+    @Column(nullable = false)
+    private int tahun;
+
     // Relasi Many-to-One ke Pengguna
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pengguna_id", nullable = false)
@@ -31,7 +34,7 @@ public class Kendaraan extends BaseEntity {
         if (platNomor == null || platNomor.trim().isEmpty()) {
             throw new IllegalArgumentException("Plat nomor tidak boleh kosong!");
         }
-        // Bisa tambah logika hapus spasi, misal: D 1234 ABC jadi D1234ABC
+
         this.platNomor = platNomor.replace(" ", "").toUpperCase();
     }
 
@@ -43,7 +46,20 @@ public class Kendaraan extends BaseEntity {
         if (merek == null || merek.trim().isEmpty()) {
             throw new IllegalArgumentException("Merek kendaraan wajib diisi!");
         }
+
         this.merek = merek;
+    }
+
+    public int getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(int tahun) {
+        if (tahun < 1900) {
+            throw new IllegalArgumentException("Tahun kendaraan tidak valid!");
+        }
+
+        this.tahun = tahun;
     }
 
     public Pengguna getPengguna() {

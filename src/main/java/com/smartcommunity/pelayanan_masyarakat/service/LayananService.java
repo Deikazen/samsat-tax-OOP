@@ -13,4 +13,6 @@ public interface LayananService {
     LayananPKB getLayananById(Long id);
 
     void updateStatusLayanan(Long id, String status);
+
+    LayananPKB bayarPajak(Long id, String metodePembayaran);
 }

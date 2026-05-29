@@ -1,12 +1,13 @@
 package com.smartcommunity.pelayanan_masyarakat.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.smartcommunity.pelayanan_masyarakat.exception.DataTidakDitemukanException;
 import com.smartcommunity.pelayanan_masyarakat.model.Admin;
 import com.smartcommunity.pelayanan_masyarakat.model.Akun;
 import com.smartcommunity.pelayanan_masyarakat.model.Pengguna;
-import com.smartcommunity.pelayanan_masyarakat.repository.AkunRepository; // Menggunakan 1 repo tunggal
+import com.smartcommunity.pelayanan_masyarakat.repository.AkunRepository;
 import com.smartcommunity.pelayanan_masyarakat.service.AuthService;
-import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -17,9 +18,25 @@ public class AuthServiceImpl implements AuthService {
         this.akunRepo = akunRepo;
     }
 
+    // Login baru:
+    // Tidak perlu pilih role, cukup email dan password.
+    // Role dicek otomatis dari tipe data akun di database.
+    @Override
+    public Akun login(String email, String password) {
+        Akun akunDb = akunRepo.findByEmail(email)
+                .orElseThrow(() -> new DataTidakDitemukanException("Email tidak terdaftar!"));
+
+        if (!akunDb.getPassword().equals(password)) {
+            throw new IllegalArgumentException("Password salah!");
+        }
+
+        akunDb.login();
+        return akunDb;
+    }
+
     @Override
     public Pengguna registerPengguna(Pengguna pengguna) {
-        return akunRepo.save(pengguna); // Polymorphism: Menerima class anak
+        return akunRepo.save(pengguna);
     }
 
     @Override
@@ -27,6 +44,8 @@ public class AuthServiceImpl implements AuthService {
         return akunRepo.save(admin);
     }
 
+    // Login lama untuk warga.
+    // Boleh tetap ada biar endpoint lama tidak rusak.
     @Override
     public Pengguna loginPengguna(Pengguna pengguna) {
         Akun akunDb = akunRepo.findByEmail(pengguna.getEmail())
@@ -36,10 +55,16 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Password warga salah!");
         }
 
+        if (!(akunDb instanceof Pengguna)) {
+            throw new IllegalArgumentException("Akun ini bukan akun masyarakat!");
+        }
+
         akunDb.login();
-        return (Pengguna) akunDb; // WAJIB DI-CASTING KE PENGGUNA
+        return (Pengguna) akunDb;
     }
 
+    // Login lama untuk admin.
+    // Boleh tetap ada biar endpoint lama tidak rusak.
     @Override
     public Admin loginAdmin(Admin admin) {
         Akun akunDb = akunRepo.findByEmail(admin.getEmail())
@@ -49,7 +74,11 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Password admin salah!");
         }
 
+        if (!(akunDb instanceof Admin)) {
+            throw new IllegalArgumentException("Akun ini bukan akun admin!");
+        }
+
         akunDb.login();
-        return (Admin) akunDb; // WAJIB DI-CASTING KE ADMIN
+        return (Admin) akunDb;
     }
 }

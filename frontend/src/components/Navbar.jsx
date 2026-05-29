@@ -6,7 +6,7 @@ function Navbar() {
 
   const logout = () => {
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (

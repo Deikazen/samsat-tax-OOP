@@ -1,48 +1,85 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import { pengguna } from "../data/dummyData";
+import api from "../services/api";
 
 function PenggunaPage() {
-  const [listPengguna, setListPengguna] = useState(pengguna);
+  const [listPengguna, setListPengguna] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [nama, setNama] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [nik, setNik] = useState("");
   const [alamat, setAlamat] = useState("");
   const [noHp, setNoHp] = useState("");
 
-  const tambahPengguna = (e) => {
+  useEffect(() => {
+    getPengguna();
+  }, []);
+
+  const getPengguna = async () => {
+    try {
+      const response = await api.get("/pengguna");
+      setListPengguna(response.data);
+    } catch (error) {
+      console.error("Gagal mengambil data pengguna:", error);
+      alert("Gagal mengambil data masyarakat dari backend");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const tambahPengguna = async (e) => {
     e.preventDefault();
 
-    if (!nama || !nik || !alamat || !noHp) {
-      alert("Semua data wajib diisi");
+    if (!nama || !email || !password || !nik) {
+      alert("Nama, email, password, dan NIK wajib diisi");
       return;
     }
 
-    const newPengguna = {
-      id: listPengguna.length + 1,
+    const dataPengguna = {
       nama,
+      email,
+      password,
       nik,
       alamat,
       noHp,
     };
 
-    setListPengguna([...listPengguna, newPengguna]);
+    try {
+      await api.post("/pengguna", dataPengguna);
 
-    setNama("");
-    setNik("");
-    setAlamat("");
-    setNoHp("");
-    setShowForm(false);
+      alert("Data masyarakat berhasil ditambahkan");
+
+      setNama("");
+      setEmail("");
+      setPassword("");
+      setNik("");
+      setAlamat("");
+      setNoHp("");
+      setShowForm(false);
+
+      getPengguna();
+    } catch (error) {
+      console.error("Gagal tambah pengguna:", error);
+      alert("Gagal menambahkan data masyarakat. Cek backend atau console.");
+    }
   };
 
-  const hapusPengguna = (id) => {
+  const hapusPengguna = async (id) => {
     const konfirmasi = confirm("Yakin ingin menghapus data ini?");
 
-    if (konfirmasi) {
-      const dataBaru = listPengguna.filter((item) => item.id !== id);
-      setListPengguna(dataBaru);
+    if (!konfirmasi) return;
+
+    try {
+      await api.delete(`/pengguna/${id}`);
+      alert("Data masyarakat berhasil dihapus");
+      getPengguna();
+    } catch (error) {
+      console.error("Gagal hapus pengguna:", error);
+      alert("Gagal menghapus data masyarakat");
     }
   };
 
@@ -57,7 +94,7 @@ function PenggunaPage() {
           <div className="page-header">
             <div>
               <h1>Kelola Data Masyarakat</h1>
-              <p>Data masyarakat atau wajib pajak yang terdaftar.</p>
+              <p>Data masyarakat atau wajib pajak yang terdaftar dari database.</p>
             </div>
 
             <button onClick={() => setShowForm(!showForm)}>
@@ -77,10 +114,26 @@ function PenggunaPage() {
                 onChange={(e) => setNama(e.target.value)}
               />
 
+              <label>Email</label>
+              <input
+                type="email"
+                placeholder="Masukkan email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="Minimal 6 karakter"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
               <label>NIK</label>
               <input
                 type="text"
-                placeholder="Masukkan NIK"
+                placeholder="Masukkan NIK 16 digit"
                 value={nik}
                 onChange={(e) => setNik(e.target.value)}
               />
@@ -105,38 +158,52 @@ function PenggunaPage() {
             </form>
           )}
 
-          <table>
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>NIK</th>
-                <th>Alamat</th>
-                <th>No HP</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {listPengguna.map((item, index) => (
-                <tr key={item.id}>
-                  <td>{index + 1}</td>
-                  <td>{item.nama}</td>
-                  <td>{item.nik}</td>
-                  <td>{item.alamat}</td>
-                  <td>{item.noHp}</td>
-                  <td>
-                    <button
-                      className="btn-danger"
-                      onClick={() => hapusPengguna(item.id)}
-                    >
-                      Hapus
-                    </button>
-                  </td>
+          {loading ? (
+            <div className="summary-card">
+              <p>Loading data masyarakat...</p>
+            </div>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama</th>
+                  <th>Email</th>
+                  <th>NIK</th>
+                  <th>Alamat</th>
+                  <th>No HP</th>
+                  <th>Aksi</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {listPengguna.length === 0 ? (
+                  <tr>
+                    <td colSpan="7">Belum ada data masyarakat.</td>
+                  </tr>
+                ) : (
+                  listPengguna.map((item, index) => (
+                    <tr key={item.id}>
+                      <td>{index + 1}</td>
+                      <td>{item.nama}</td>
+                      <td>{item.email}</td>
+                      <td>{item.nik}</td>
+                      <td>{item.alamat || "-"}</td>
+                      <td>{item.noHp || "-"}</td>
+                      <td>
+                        <button
+                          className="btn-danger"
+                          onClick={() => hapusPengguna(item.id)}
+                        >
+                          Hapus
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          )}
         </main>
       </div>
     </div>

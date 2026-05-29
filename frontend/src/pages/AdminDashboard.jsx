@@ -5,6 +5,8 @@ import Sidebar from "../components/Sidebar";
 import api from "../services/api";
 
 function AdminDashboard() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [summary, setSummary] = useState({
     totalWargaTerdaftar: 0,
     totalLayananPKB: 0,
@@ -37,12 +39,23 @@ function AdminDashboard() {
         <Sidebar />
 
         <main className="content">
-          <div className="page-header">
+          <section className="dashboard-hero">
             <div>
-              <h1>Dashboard Admin</h1>
-              <p>Ringkasan data sistem informasi pajak kendaraan.</p>
+              <span className="dashboard-badge">Admin Panel</span>
+              <h1>Dashboard Admin SAMSAT Digital</h1>
+              <p>
+                Selamat datang, {user?.nama || "Admin"}. Kelola data
+                masyarakat, kendaraan, tagihan pajak, laporan, dan pengaduan
+                melalui satu dashboard.
+              </p>
             </div>
-          </div>
+
+            <div className="hero-status-card">
+              <p>Status Sistem</p>
+              <h3>Online</h3>
+              <span>Backend & MySQL aktif</span>
+            </div>
+          </section>
 
           {loading ? (
             <div className="summary-card">
@@ -50,49 +63,89 @@ function AdminDashboard() {
             </div>
           ) : (
             <>
-              <div className="card-grid">
-                <div className="card">
-                  <h3>Total Warga Terdaftar</h3>
-                  <h2>{summary.totalWargaTerdaftar}</h2>
-                  <p>Data warga yang terdaftar di database.</p>
-                  <Link className="card-link" to="/admin/pengguna">
-                    Lihat Data
-                  </Link>
+              <div className="dashboard-stat-grid">
+                <div className="dashboard-stat-card">
+                  <div className="stat-icon">👥</div>
+                  <div>
+                    <p>Total Masyarakat</p>
+                    <h2>{summary.totalWargaTerdaftar}</h2>
+                    <span>Data warga terdaftar</span>
+                  </div>
                 </div>
 
-                <div className="card">
-                  <h3>Total Layanan PKB</h3>
-                  <h2>{summary.totalLayananPKB}</h2>
-                  <p>Total layanan pajak kendaraan bermotor.</p>
-                  <Link className="card-link" to="/admin/tagihan">
-                    Lihat Layanan
-                  </Link>
+                <div className="dashboard-stat-card">
+                  <div className="stat-icon">🧾</div>
+                  <div>
+                    <p>Total Layanan PKB</p>
+                    <h2>{summary.totalLayananPKB}</h2>
+                    <span>Tagihan dan layanan pajak</span>
+                  </div>
                 </div>
 
-                <div className="card">
-                  <h3>Total Pengaduan</h3>
-                  <h2>{summary.totalPengaduan}</h2>
-                  <p>Total pengaduan yang masuk dari warga.</p>
-                  <Link className="card-link" to="/admin/pengaduan">
-                    Lihat Pengaduan
-                  </Link>
+                <div className="dashboard-stat-card">
+                  <div className="stat-icon">📨</div>
+                  <div>
+                    <p>Total Pengaduan</p>
+                    <h2>{summary.totalPengaduan}</h2>
+                    <span>Aduan masuk dari masyarakat</span>
+                  </div>
                 </div>
+              </div>
+
+              <div className="dashboard-section-title">
+                <h2>Menu Cepat Admin</h2>
+                <p>Akses fitur utama sistem SAMSAT Digital.</p>
+              </div>
+
+              <div className="dashboard-menu-grid">
+                <Link className="dashboard-menu-card" to="/admin/pengguna">
+                  <span>👤</span>
+                  <h3>Data Masyarakat</h3>
+                  <p>Kelola data akun masyarakat yang terdaftar.</p>
+                </Link>
+
+                <Link className="dashboard-menu-card" to="/admin/kendaraan">
+                  <span>🚗</span>
+                  <h3>Data Kendaraan</h3>
+                  <p>Kelola kendaraan yang dimiliki masyarakat.</p>
+                </Link>
+
+                <Link className="dashboard-menu-card" to="/admin/tagihan">
+                  <span>💳</span>
+                  <h3>Tagihan Pajak</h3>
+                  <p>Kelola tagihan dan status pembayaran pajak.</p>
+                </Link>
+
+                <Link className="dashboard-menu-card" to="/admin/pengaduan">
+                  <span>📩</span>
+                  <h3>Pengaduan</h3>
+                  <p>Lihat dan proses pengaduan dari masyarakat.</p>
+                </Link>
+
+                <Link className="dashboard-menu-card" to="/admin/laporan">
+                  <span>📊</span>
+                  <h3>Laporan Pajak</h3>
+                  <p>Lihat rekap data pajak kendaraan dari database.</p>
+                </Link>
               </div>
 
               <div className="summary-section">
                 <div className="summary-card">
-                  <h3>Status Koneksi Backend</h3>
+                  <h3>Fungsi Dashboard</h3>
                   <p>
-                    Frontend sudah berhasil mengambil data dari backend Spring
-                    Boot melalui endpoint <b>/api/dashboard/summary</b>.
+                    Dashboard admin menampilkan ringkasan data dari backend
+                    melalui endpoint <b>/api/dashboard/summary</b>. Admin dapat
+                    mengakses data masyarakat, kendaraan, tagihan, pengaduan,
+                    dan laporan pajak.
                   </p>
                 </div>
 
                 <div className="summary-card">
-                  <h3>Status Sistem</h3>
+                  <h3>Koneksi Sistem</h3>
                   <p>
-                    Backend, database MySQL Laragon, dan frontend React sudah
-                    mulai terhubung.
+                    Frontend React mengambil data dari backend Spring Boot,
+                    sedangkan backend menyimpan dan membaca data dari MySQL
+                    Laragon.
                   </p>
                 </div>
               </div>

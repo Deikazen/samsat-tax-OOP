@@ -17,8 +17,14 @@ public class Pengguna extends Akun {
     @Column(nullable = false, unique = true, length = 16)
     private String nik;
 
+    @Column(length = 255)
+    private String alamat;
+
+    @Column(length = 20)
+    private String noHp;
+
     // Relasi One-to-Many (1 Pengguna bisa membuat banyak Pengaduan)
-    @JsonIgnore  // agar ga looping
+    @JsonIgnore // agar ga looping
     @OneToMany(mappedBy = "pengguna", cascade = CascadeType.ALL)
     private List<Pengaduan> listPengaduan;
 
@@ -43,6 +49,22 @@ public class Pengguna extends Akun {
             throw new IllegalArgumentException("NIK harus tepat 16 digit!");
         }
         this.nik = nik;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getNoHp() {
+        return noHp;
+    }
+
+    public void setNoHp(String noHp) {
+        this.noHp = noHp;
     }
 
     public List<Pengaduan> getListPengaduan() {
