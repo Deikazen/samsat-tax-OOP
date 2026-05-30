@@ -177,19 +177,67 @@ Berikut perubahan yang ditambahkan pada sistem berdasarkan revisi asisten labora
 ### 1. Membuat Halaman Login
 
 **Penjelasan singkat:**
-Halaman login telah dibuat. Role pengguna tidak ditentukan sendiri oleh user saat registrasi, tetapi ditentukan oleh admin melalui dashboard/admin panel.
+- **Yang direvisi/ditambah:** Halaman login (`Login.jsx`) dan alur autentikasi.
+- **Detail:** User sekarang login hanya menggunakan email dan password. Pilihan (dropdown) role pengguna pada form login telah dihapus, karena penentuan role (Admin/Masyarakat) kini ditentukan otomatis oleh sistem/backend (berdasarkan pengaturan admin), bukan dipilih sendiri oleh user.
+
+**Alur Login:**
+```mermaid
+flowchart LR
+    A[User] --> B[Input Email & Password]
+    B --> C{Sistem Cek Database}
+    C -->|Role: Admin| D[Akses Admin Dashboard]
+    C -->|Role: Masyarakat| E[Akses Masyarakat Dashboard]
+```
 
 ### 2. Menambahkan Fitur Pembayaran
 
 **Penjelasan singkat:**
-Sistem telah ditambahkan fitur pembayaran agar masyarakat dapat membayar tagihan.
+- **Yang direvisi/ditambah:** Halaman tagihan (`TagihanPage.jsx`) dan penambahan pop-up pembayaran/QRIS.
+- **Detail:** Menambahkan fitur agar masyarakat dapat langsung membayar tagihan pajak kendaraannya dari dalam aplikasi. Setelah pembayaran selesai, status tagihan otomatis berubah menjadi `LUNAS` dan masyarakat bisa melihat serta mencetak bukti pembayaran.
+
+**Alur Pembayaran:**
+```mermaid
+flowchart LR
+    A[Masyarakat] --> B[Lihat Tagihan]
+    B --> C[Klik Tombol Bayar]
+    C --> D[Pop-up QRIS Muncul]
+    D --> E[Sistem Proses Pembayaran]
+    E --> F[Status: LUNAS & Cetak Bukti]
+```
 
 ### 3. Membuat Halaman Registrasi
 
 **Penjelasan singkat:**
-Halaman registrasi telah dibuat agar masyarakat dapat mendaftarkan akun baru.
+- **Yang direvisi/ditambah:** Halaman registrasi baru (`Register.jsx`) dan route pendaftaran.
+- **Detail:** Menambahkan halaman agar masyarakat bisa membuat akun mereka sendiri. Pada form registrasi ini, user tidak perlu/tidak bisa menentukan role sendiri.
+
+**Alur Registrasi:**
+```mermaid
+flowchart LR
+    A[User Baru] --> B[Isi Form Registrasi]
+    B --> C[Sistem Proses Data]
+    C --> D[Akun Tersimpan\nRole: MASYARAKAT]
+    D --> E[Masuk ke Halaman Login]
+```
 
 ### 4. Memperbaiki Tampilan dan Fungsi Dashboard
 
 **Penjelasan singkat:**
-Tampilan dashboard telah diperbaiki dan fungsinya dioptimalkan agar lebih rapi, informatif, dan berjalan dengan baik.
+- **Yang direvisi/ditambah:** Desain antarmuka (UI) untuk `AdminDashboard.jsx`, `MasyarakatDashboard.jsx`, serta penambahan komponen animasi (seperti `TiltCard.jsx`).
+- **Detail:** Tampilan dashboard dirombak total menjadi lebih premium, interaktif, rapi, dan modern. Fungsi menu navigasi dan ringkasan data juga dioptimalkan agar berjalan dengan lancar sesuai role pengguna.
+
+**Struktur Dashboard UI Baru:**
+```mermaid
+graph TD
+    A[Premium Dashboard UI] --> B[Admin Dashboard]
+    A --> C[Masyarakat Dashboard]
+    
+    B --> B1[Menu Manajemen Warga & Admin]
+    B --> B2[Menu Kendaraan Warga]
+    B --> B3[Manajemen Tagihan PKB]
+    
+    C --> C1[Lihat Data Diri & Kendaraan]
+    C --> C2[Lihat Tagihan & Bayar Pajak]
+    C --> C3[Riwayat & Layanan Lainnya]
+```
+
