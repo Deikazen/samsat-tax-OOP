@@ -328,12 +328,12 @@ const newKendaraan = await api.post("/kendaraan", {
 
 ## 👥 Contributors
 
-Terima kasih kepada semua kontributor yang telah berkontribusi dalam pengembangan project ini:
+Kontributor yang telah berkontribusi dalam pengembangan project ini:
 
-| Contributors | Contributions | Profile |
-|--------------|---------------|---------|
-| [![Deikazen](https://avatars.githubusercontent.com/u/145914264?v=4&s=100)](https://github.com/Deikazen) | 12 | [@Deikazen](https://github.com/Deikazen) |
-| [![alfarezalfathir](https://avatars.githubusercontent.com/u/225691449?v=4&s=100)](https://github.com/alfarezalfathir) | 3 | [@alfarezalfathir](https://github.com/alfarezalfathir) |
+
+[@Deikazen](https://github.com/Deikazen)
+
+[@alfarezalfathir](https://github.com/alfarezalfathir) 
 
 ---
 
