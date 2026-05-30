@@ -129,9 +129,9 @@ Setelah pembayaran berhasil, status tagihan berubah menjadi `LUNAS`, metode pemb
 
 ### Backend
 
-1. Pastikan Anda telah menginstal Java dan MySQL.
+1. Pastikan Anda telah menginstal **Java 21** dan **MySQL**.
 2. Konfigurasi database pada file `application.properties` sesuai kredensial MySQL lokal.
-3. Jalankan aplikasi menggunakan Maven:
+3. Jalankan aplikasi menggunakan Maven (langkah ini akan mengunduh dan menginstal otomatis semua library backend seperti Spring Boot, JPA, dan MySQL Driver):
 
 ```bash
 ./mvnw spring-boot:run
@@ -157,7 +157,7 @@ http://localhost:8080
 cd frontend
 ```
 
-2. Install dependency:
+2. Install dependency (langkah ini akan menginstal semua library yang terdaftar di `package.json` seperti React, Vite, Axios, Framer Motion, dll):
 
 ```bash
 npm install
@@ -183,13 +183,13 @@ Berikut perubahan yang ditambahkan pada sistem berdasarkan revisi asisten labora
 
 **Penjelasan singkat:**
 - **Yang direvisi/ditambah:** Halaman login (`Login.jsx`) dan alur autentikasi.
-- **Detail:** User sekarang login hanya menggunakan email dan password. Pilihan (dropdown) role pengguna pada form login telah dihapus, karena penentuan role (Admin/Masyarakat) kini ditentukan otomatis oleh sistem/backend (berdasarkan pengaturan admin), bukan dipilih sendiri oleh user.
+- **Detail:** Role pengguna tidak ditentukan sendiri oleh user saat registrasi maupun login, tetapi ditentukan oleh admin melalui dashboard/admin panel. Form login kini hanya meminta email dan password, lalu sistem yang menentukan apakah akun tersebut masuk sebagai Admin atau Masyarakat.
 
 **Alur Login:**
 ```mermaid
 flowchart LR
     A[User] --> B[Input Email & Password]
-    B --> C{Sistem Cek Database}
+    B --> C{Sistem Cek Role\n(Ditetapkan Admin)}
     C -->|Role: Admin| D[Akses Admin Dashboard]
     C -->|Role: Masyarakat| E[Akses Masyarakat Dashboard]
 ```
@@ -244,23 +244,4 @@ graph TD
     C --> C1[Lihat Data Diri & Kendaraan]
     C --> C2[Lihat Tagihan & Bayar Pajak]
     C --> C3[Riwayat & Layanan Lainnya]
-```
-
-### 5. Pengelolaan Data Akun (Admin & Masyarakat)
-
-**Penjelasan singkat:**
-- **Yang direvisi/ditambah:** Halaman `PenggunaPage.jsx`, controller untuk Admin & Pengguna, serta penyesuaian CSS.
-- **Detail:** Mengubah fitur "Data Masyarakat" menjadi "Kelola Data Akun" menggunakan sistem tab. Admin kini bisa melakukan proses CRUD (Create, Read, Update, Delete) secara terpusat untuk akun **Admin** dan **Masyarakat** di dalam satu halaman yang sama. Registrasi Admin yang sebelumnya lewat `/register/admin` juga sudah dipusatkan pengelolaannya ke fitur ini.
-
-**Struktur Kelola Data Akun:**
-```mermaid
-graph TD
-    A[Halaman Kelola Data Akun] --> B[Tab Masyarakat]
-    A --> C[Tab Admin]
-    
-    B --> B1[Lihat Data Masyarakat]
-    B --> B2[Tambah, Edit, Hapus Masyarakat]
-    
-    C --> C1[Lihat Data Admin]
-    C --> C2[Tambah, Edit, Hapus Admin]
 ```
