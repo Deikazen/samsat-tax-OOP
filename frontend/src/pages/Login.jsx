@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { ArrowLeft, ArrowRight, Lock, Mail, ShieldCheck } from "lucide-react";
 import api from "../services/api";
+import PremiumBackground from "../components/PremiumBackground";
+import TiltCard from "../components/TiltCard";
 
 function Login() {
   const navigate = useNavigate();
@@ -29,7 +33,6 @@ function Login() {
       });
 
       const userLogin = response.data;
-
       localStorage.setItem("user", JSON.stringify(userLogin));
 
       if (userLogin.role === "ADMIN") {
@@ -48,94 +51,102 @@ function Login() {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-left">
-        <div className="auth-badge">SAMSAT Digital</div>
+    <main className="auth-clean-page">
+      <PremiumBackground dark />
 
-        <h1>Kelola Pajak Kendaraan Jadi Lebih Mudah</h1>
+      <Link to="/" className="back-home-btn">
+        <ArrowLeft size={18} />
+        Kembali ke Home
+      </Link>
 
-        <p>
-          Login untuk mengakses layanan kendaraan, tagihan pajak, pembayaran,
-          dan pengaduan secara digital.
-        </p>
-
-        <div className="auth-feature-list">
-          <div className="auth-feature-item">
-            <span>01</span>
-            <div>
-              <h4>Cek Kendaraan</h4>
-              <p>Lihat kendaraan yang terdaftar berdasarkan akun masyarakat.</p>
-            </div>
+      <section className="auth-clean-wrap">
+        <motion.div
+          className="auth-clean-copy"
+          initial={{ opacity: 0, x: -28 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
+          <div className="home-eyebrow">
+            <ShieldCheck size={18} />
+            Secure Login
           </div>
 
-          <div className="auth-feature-item">
-            <span>02</span>
-            <div>
-              <h4>Tagihan Pajak</h4>
-              <p>Cek status pajak kendaraan dan informasi tagihan.</p>
-            </div>
-          </div>
+          <h1>Masuk ke Sistem SAMSAT Digital</h1>
 
-          <div className="auth-feature-item">
-            <span>03</span>
-            <div>
-              <h4>Pengaduan</h4>
-              <p>Kirim pengaduan dan lihat status proses dari admin.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="auth-right">
-        <form className="auth-card" onSubmit={handleLogin}>
-          <h2>Masuk Akun</h2>
-          <p className="auth-subtitle">
-            Masukkan email dan password. Role akun akan dibaca otomatis dari
-            database.
+          <p>
+            Login untuk mengakses dashboard sesuai role akun. Admin dapat
+            mengelola data pajak, sedangkan masyarakat dapat melihat kendaraan,
+            tagihan, pembayaran, dan bukti bayar.
           </p>
 
-          {error && <div className="auth-error">{error}</div>}
+          <TiltCard className="login-info-card">
+            <h3>Role Otomatis</h3>
+            <p>
+              Role tidak dipilih oleh user. Sistem membaca role dari data akun
+              yang tersimpan di database.
+            </p>
+          </TiltCard>
+        </motion.div>
 
-          <div className="auth-field">
-            <label>Email</label>
-            <input
-              type="email"
-              placeholder="Masukkan email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+        <motion.form
+          className="auth-clean-card"
+          onSubmit={handleLogin}
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="auth-clean-header">
+            <span>Welcome Back</span>
+            <h2>Login Akun</h2>
+            <p>Masukkan email dan password untuk melanjutkan.</p>
           </div>
 
-          <div className="auth-field">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Masukkan password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+          {error && <div className="tax-error">{error}</div>}
 
-          <button className="auth-button" type="submit" disabled={loading}>
-            {loading ? "Memproses..." : "Login"}
+          <label className="auth-field-clean">
+            <span>Email</span>
+            <div>
+              <Mail size={18} />
+              <input
+                type="email"
+                placeholder="admin@samsat.go.id"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </label>
+
+          <label className="auth-field-clean">
+            <span>Password</span>
+            <div>
+              <Lock size={18} />
+              <input
+                type="password"
+                placeholder="Masukkan password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </label>
+
+          <button
+            className="home-primary-btn auth-submit-btn"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Memproses..." : "Login Dashboard"}
+            <ArrowRight size={18} />
           </button>
 
-          <p className="auth-link">
-            Belum punya akun? <Link to="/register">Daftar sekarang</Link>
+          <p className="auth-bottom-text">
+            Belum punya akun? <Link to="/register">Daftar masyarakat</Link>
           </p>
 
-          <div className="auth-demo">
-            <p className="auth-demo-title">Akun Demo</p>
-            <p>
-              <b>Admin:</b> admin@samsat.go.id / admin123
-            </p>
-            <p>
-              <b>Masyarakat:</b> satria@mail.com / rahasia123
-            </p>
+          <div className="auth-demo-mini">
+            <span>Admin: admin@samsat.go.id / admin123</span>
+            <span>Masyarakat: satria@mail.com / rahasia123</span>
           </div>
-        </form>
-      </div>
-    </div>
+        </motion.form>
+      </section>
+    </main>
   );
 }
 

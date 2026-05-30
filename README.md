@@ -172,94 +172,24 @@ http://localhost:5173
 
 ## Revisi dan Penambahan Fitur
 
-Berikut perubahan yang ditambahkan pada sistem:
+Berikut perubahan yang ditambahkan pada sistem berdasarkan revisi asisten laboratorium:
 
-### 1. Login Role Otomatis
-
-**Yang diubah/ditambah:**
-
-- `AuthController.java`
-- `AuthService.java`
-- `AuthServiceImpl.java`
-- `LoginRequest.java`
-- `Login.jsx`
+### 1. Membuat Halaman Login
 
 **Penjelasan singkat:**
-Login tidak lagi memilih role manual. User hanya memasukkan email dan password, lalu backend menentukan apakah akun tersebut `ADMIN` atau `MASYARAKAT`.
+Halaman login telah dibuat. Role pengguna tidak ditentukan sendiri oleh user saat registrasi, tetapi ditentukan oleh admin melalui dashboard/admin panel.
 
-### 2. Halaman Registrasi
-
-**Yang ditambah:**
-
-- `Register.jsx`
-- Route `/register` pada `App.jsx`
+### 2. Menambahkan Fitur Pembayaran
 
 **Penjelasan singkat:**
-Ditambahkan halaman registrasi untuk masyarakat. User tidak memilih role saat registrasi.
+Sistem telah ditambahkan fitur pembayaran agar masyarakat dapat membayar tagihan.
 
-### 3. Pembayaran Pajak
-
-**Yang diubah/ditambah:**
-
-- `LayananPKB.java`
-- `LayananController.java`
-- `LayananService.java`
-- `LayananServiceImpl.java`
-- `TagihanPage.jsx`
+### 3. Membuat Halaman Registrasi
 
 **Penjelasan singkat:**
-Masyarakat dapat membayar tagihan pajak. Setelah dibayar, status berubah menjadi `LUNAS`, serta metode pembayaran dan tanggal bayar tersimpan ke database.
+Halaman registrasi telah dibuat agar masyarakat dapat mendaftarkan akun baru.
 
-### 4. Perbaikan Dashboard
-
-**Yang diubah:**
-
-- `AdminDashboard.jsx`
-- `MasyarakatDashboard.jsx`
-- `style.css`
+### 4. Memperbaiki Tampilan dan Fungsi Dashboard
 
 **Penjelasan singkat:**
-Tampilan dashboard diperbaiki agar lebih rapi, informatif, dan memiliki menu cepat sesuai role.
-
-### 5. CRUD Kendaraan
-
-**Yang diubah/ditambah:**
-
-- `Kendaraan.java`
-- `KendaraanController.java`
-- `KendaraanPage.jsx`
-
-**Penjelasan singkat:**
-Admin dapat menambah, melihat, mengedit, dan menghapus kendaraan. Admin juga dapat memilih pemilik kendaraan dari data masyarakat.
-
-### 6. Bukti Pembayaran
-
-**Yang diubah/ditambah:**
-
-- `TagihanPage.jsx`
-- `style.css`
-
-**Penjelasan singkat:**
-Setelah tagihan lunas, sistem menampilkan tombol cetak bukti pembayaran. Bukti dapat dicetak atau disimpan sebagai PDF melalui fitur print browser.
-
-### 7. Proteksi Route Berdasarkan Role
-
-**Yang ditambah/diubah:**
-
-- `ProtectedRoute.jsx`
-- `App.jsx`
-
-**Penjelasan singkat:**
-Halaman admin hanya dapat diakses oleh admin. Halaman masyarakat hanya dapat diakses oleh masyarakat. User yang belum login diarahkan ke halaman login.
-
-### 8. Jatuh Tempo dan Denda Otomatis
-
-**Yang diubah/ditambah:**
-
-- `LayananPKB.java`
-- `LayananServiceImpl.java`
-- `TagihanPage.jsx`
-- Kolom database: `jatuh_tempo`, `denda`
-
-**Penjelasan singkat:**
-Admin menentukan tanggal jatuh tempo. Sistem menghitung denda otomatis sebesar Rp50.000 per bulan keterlambatan jika pembayaran melewati jatuh tempo.
+Tampilan dashboard telah diperbaiki dan fungsinya dioptimalkan agar lebih rapi, informatif, dan berjalan dengan baik.

@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
@@ -15,11 +16,17 @@ import LaporanPage from "./pages/LaporanPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  let user = null;
+
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch (error) {
+    localStorage.removeItem("user");
+  }
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Home />} />
 
       <Route
         path="/login"
@@ -47,7 +54,6 @@ function App() {
         }
       />
 
-      {/* ADMIN ROUTES */}
       <Route
         path="/admin"
         element={
@@ -102,7 +108,6 @@ function App() {
         }
       />
 
-      {/* MASYARAKAT ROUTES */}
       <Route
         path="/masyarakat"
         element={
@@ -147,7 +152,7 @@ function App() {
           ) : user?.role === "MASYARAKAT" ? (
             <Navigate to="/masyarakat" replace />
           ) : (
-            <Navigate to="/login" replace />
+            <Navigate to="/" replace />
           )
         }
       />
