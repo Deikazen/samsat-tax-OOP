@@ -15,7 +15,7 @@ function Sidebar() {
 
   const adminMenus = [
     { to: "/admin", label: "Dashboard", icon: Home },
-    { to: "/admin/pengguna", label: "Data Masyarakat", icon: Users },
+    { to: "/admin/pengguna", label: "Data Akun", icon: Users },
     { to: "/admin/kendaraan", label: "Data Kendaraan", icon: Car },
     { to: "/admin/tagihan", label: "Tagihan Pajak", icon: CreditCard },
     { to: "/admin/pengaduan", label: "Pengaduan", icon: MessageSquare },

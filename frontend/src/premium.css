@@ -5795,3 +5795,112 @@ button {
     justify-content: center;
   }
 }
+
+/* =========================================================
+   KELOLA AKUN: TAB MASYARAKAT DAN ADMIN
+========================================================= */
+
+.account-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 6px;
+  width: fit-content;
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+}
+
+.account-tabs button {
+  border: 0;
+  border-radius: 11px;
+  padding: 11px 18px;
+  background: transparent;
+  color: #64748b;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.account-tabs button.active {
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+}
+
+.account-form {
+  margin-bottom: 20px;
+}
+
+.account-form-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.account-form-heading h3 {
+  margin: 0;
+}
+
+.account-close-form {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 9px 13px;
+  background: #ffffff;
+  color: #475569;
+  cursor: pointer;
+}
+
+.account-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.account-form-grid label {
+  display: grid;
+  gap: 7px;
+}
+
+.account-form-grid span {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.account-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-edit {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 15px;
+  background: #f59e0b;
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-edit:hover {
+  background: #d97706;
+}
+
+@media (max-width: 700px) {
+  .account-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-tabs {
+    width: 100%;
+  }
+
+  .account-tabs button {
+    flex: 1;
+  }
+}

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,28 @@ public class PenggunaController {
     public ResponseEntity<Pengguna> tambahPengguna(@RequestBody Pengguna pengguna) {
         Pengguna savedPengguna = penggunaRepository.save(pengguna);
         return ResponseEntity.ok(savedPengguna);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Pengguna> updatePengguna(
+            @PathVariable Long id,
+            @RequestBody Pengguna dataBaru) {
+
+        Pengguna pengguna = penggunaRepository.findById(id)
+                .orElseThrow(() ->
+                        new DataTidakDitemukanException("Pengguna tidak ditemukan"));
+
+        pengguna.setNama(dataBaru.getNama());
+        pengguna.setEmail(dataBaru.getEmail());
+        pengguna.setNik(dataBaru.getNik());
+        pengguna.setAlamat(dataBaru.getAlamat());
+        pengguna.setNoHp(dataBaru.getNoHp());
+
+        if (dataBaru.getPassword() != null
+                && !dataBaru.getPassword().isBlank()) {
+            pengguna.setPassword(dataBaru.getPassword());
+        }
+
+        return ResponseEntity.ok(penggunaRepository.save(pengguna));
     }
 
     @DeleteMapping("/{id}")

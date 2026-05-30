@@ -2,27 +2,32 @@
 
 Proyek ini adalah sistem layanan masyarakat berbasis Spring Boot dan React Vite yang menyediakan fitur autentikasi, dashboard, pengelolaan data masyarakat, data kendaraan, layanan pajak kendaraan bermotor (PKB), pembayaran pajak, pengaduan masyarakat, laporan, serta bukti pembayaran.
 
-## Teknologi yang Digunakan
+## Teknologi dan Library yang Digunakan
 
-### Backend
+Untuk menjalankan proyek ini setelah di-clone, berikut adalah pustaka (library) dan spesifikasi teknologi yang digunakan:
 
-- Java 21
-- Spring Boot
-- Spring Data JPA
-- Spring Web
-- MySQL Driver
-- Lombok
+### ⚙️ Backend (Java / Spring Boot)
+- **Java 21** (JDK minimum)
+- **Spring Boot** `v4.0.6`
+- **Spring Boot Starter Web** (Untuk REST API)
+- **Spring Boot Starter Data JPA** (ORM / Interaksi dengan database)
+- **Spring Boot Starter Actuator** (Monitoring dan manajemen aplikasi)
+- **MySQL Connector/J** (Driver koneksi ke MySQL)
+- **Lombok** (Mengurangi boilerplate code seperti Getter/Setter)
 
-### Frontend
+### 🎨 Frontend (React + Vite)
+- **React** `^19.2.6` (Library UI utama)
+- **Vite** `^8.0.12` (Build tool super cepat)
+- **React Router DOM** `^7.15.1` (Manajemen navigasi/routing halaman)
+- **Axios** `^1.16.1` (Melakukan HTTP request ke REST API Backend)
+- **Lucide React** `^1.17.0` (Koleksi ikon elegan untuk UI)
+- **Framer Motion** `^12.40.0` (Library animasi untuk komponen UI interaktif seperti `TiltCard`)
+- **Recharts** `^3.8.1` (Pembuatan grafik dan chart pelaporan)
+- **Vanilla CSS** (Custom styling menggunakan Flexbox & CSS Grid)
 
-- React Vite
-- React Router DOM
-- Axios
-- CSS
+### 🗄️ Database
+- **MySQL** (Penyimpanan data relasional)
 
-### Database
-
-- MySQL
 
 ## Dokumentasi Endpoint API
 
@@ -241,3 +246,21 @@ graph TD
     C --> C3[Riwayat & Layanan Lainnya]
 ```
 
+### 5. Pengelolaan Data Akun (Admin & Masyarakat)
+
+**Penjelasan singkat:**
+- **Yang direvisi/ditambah:** Halaman `PenggunaPage.jsx`, controller untuk Admin & Pengguna, serta penyesuaian CSS.
+- **Detail:** Mengubah fitur "Data Masyarakat" menjadi "Kelola Data Akun" menggunakan sistem tab. Admin kini bisa melakukan proses CRUD (Create, Read, Update, Delete) secara terpusat untuk akun **Admin** dan **Masyarakat** di dalam satu halaman yang sama. Registrasi Admin yang sebelumnya lewat `/register/admin` juga sudah dipusatkan pengelolaannya ke fitur ini.
+
+**Struktur Kelola Data Akun:**
+```mermaid
+graph TD
+    A[Halaman Kelola Data Akun] --> B[Tab Masyarakat]
+    A --> C[Tab Admin]
+    
+    B --> B1[Lihat Data Masyarakat]
+    B --> B2[Tambah, Edit, Hapus Masyarakat]
+    
+    C --> C1[Lihat Data Admin]
+    C --> C2[Tambah, Edit, Hapus Admin]
+```
