@@ -189,7 +189,7 @@ Berikut perubahan yang ditambahkan pada sistem berdasarkan revisi asisten labora
 ```mermaid
 flowchart LR
     A[User] --> B[Input Email & Password]
-    B --> C{Sistem Cek Role\n(Ditetapkan Admin)}
+    B --> C{Sistem Cek Role<br>Ditetapkan Admin}
     C -->|Role: Admin| D[Akses Admin Dashboard]
     C -->|Role: Masyarakat| E[Akses Masyarakat Dashboard]
 ```
@@ -221,7 +221,7 @@ flowchart LR
 flowchart LR
     A[User Baru] --> B[Isi Form Registrasi]
     B --> C[Sistem Proses Data]
-    C --> D[Akun Tersimpan\nRole: MASYARAKAT]
+    C --> D[Akun Tersimpan<br>Role: MASYARAKAT]
     D --> E[Masuk ke Halaman Login]
 ```
 
