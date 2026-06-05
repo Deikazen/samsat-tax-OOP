@@ -1,6 +1,19 @@
-import { useState } from "react";
+import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Lock,
+  Mail,
+  MapPin,
+  Phone,
+  User,
+  UserRound,
+} from "lucide-react";
 import api from "../services/api";
+import PremiumBackground from "../components/PremiumBackground";
+import TiltCard from "../components/TiltCard";
 
 function Register() {
   const navigate = useNavigate();
@@ -57,106 +70,154 @@ function Register() {
   };
 
   return (
-    <div className="auth-page register-page">
-      <div className="auth-left">
-        <div className="auth-badge">Registrasi Masyarakat</div>
+    <main className="tax-auth-page register-premium-page">
+      <PremiumBackground dark />
 
-        <h1>Buat Akun SAMSAT Digital</h1>
+      <Link to="/" className="back-home-btn">
+        <ArrowLeft size={18} />
+        Kembali ke Home
+      </Link>
 
-        <p>
-          Daftar sebagai masyarakat untuk melihat kendaraan, tagihan pajak,
-          pembayaran pajak, dan mengirim pengaduan.
-        </p>
+      <section className="tax-auth-left">
+        <motion.div
+          className="tax-badge"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <UserRound size={18} />
+          Citizen Registration
+        </motion.div>
 
-        <div className="auth-note-box">
-          <h4>Catatan Role</h4>
+        <motion.h1
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          Daftar Akun Masyarakat untuk Layanan Pajak Digital.
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+        >
+          Akun masyarakat digunakan untuk melihat kendaraan, tagihan pajak,
+          pembayaran, bukti transaksi, dan pengaduan.
+        </motion.p>
+
+        <TiltCard className="tax-rule-card">
+          <h3>Role Tidak Dipilih Manual</h3>
           <p>
-            User tidak memilih role sendiri. Akun registrasi akan masuk sebagai
-            masyarakat, sedangkan admin dikelola melalui dashboard/admin panel.
+            User yang registrasi dari halaman ini masuk sebagai masyarakat.
+            Akun admin dikelola melalui sistem/admin panel.
           </p>
-        </div>
-      </div>
+        </TiltCard>
+      </section>
 
-      <div className="auth-right">
-        <form className="auth-card register-card" onSubmit={handleRegister}>
-          <h2>Daftar Akun</h2>
-          <p className="auth-subtitle">
-            Lengkapi data berikut untuk membuat akun masyarakat.
-          </p>
-
-          {error && <div className="auth-error">{error}</div>}
-
-          <div className="auth-field">
-            <label>Nama Lengkap</label>
-            <input
-              type="text"
-              placeholder="Masukkan nama lengkap"
-              value={nama}
-              onChange={(e) => setNama(e.target.value)}
-            />
+      <motion.section
+        className="tax-auth-right"
+        initial={{ opacity: 0, x: 44 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.55 }}
+      >
+        <form className="tax-login-panel register-panel" onSubmit={handleRegister}>
+          <div className="login-panel-header">
+            <span>Create Account</span>
+            <h2>Registrasi</h2>
+            <p>Lengkapi data masyarakat untuk membuat akun.</p>
           </div>
 
-          <div className="auth-field">
-            <label>Email</label>
-            <input
-              type="email"
-              placeholder="Masukkan email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+          {error && <div className="tax-error">{error}</div>}
 
-          <div className="auth-field">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Minimal 6 karakter"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+          <label className="tax-input-group">
+            <span>Nama Lengkap</span>
+            <div>
+              <User size={18} />
+              <input
+                type="text"
+                placeholder="Masukkan nama lengkap"
+                value={nama}
+                onChange={(e) => setNama(e.target.value)}
+              />
+            </div>
+          </label>
 
-          <div className="auth-field">
-            <label>NIK</label>
-            <input
-              type="text"
-              placeholder="Masukkan NIK 16 digit"
-              value={nik}
-              onChange={(e) => setNik(e.target.value)}
-              maxLength="16"
-            />
-          </div>
+          <label className="tax-input-group">
+            <span>Email</span>
+            <div>
+              <Mail size={18} />
+              <input
+                type="email"
+                placeholder="contoh@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </label>
 
-          <div className="auth-field">
-            <label>Alamat</label>
-            <input
-              type="text"
-              placeholder="Masukkan alamat"
-              value={alamat}
-              onChange={(e) => setAlamat(e.target.value)}
-            />
-          </div>
+          <label className="tax-input-group">
+            <span>Password</span>
+            <div>
+              <Lock size={18} />
+              <input
+                type="password"
+                placeholder="Minimal 6 karakter"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </label>
 
-          <div className="auth-field">
-            <label>No HP</label>
-            <input
-              type="text"
-              placeholder="Masukkan nomor HP"
-              value={noHp}
-              onChange={(e) => setNoHp(e.target.value)}
-            />
-          </div>
+          <label className="tax-input-group">
+            <span>NIK</span>
+            <div>
+              <UserRound size={18} />
+              <input
+                type="text"
+                placeholder="NIK 16 digit"
+                value={nik}
+                maxLength="16"
+                onChange={(e) => setNik(e.target.value)}
+              />
+            </div>
+          </label>
 
-          <button className="auth-button" type="submit" disabled={loading}>
-            {loading ? "Memproses..." : "Daftar"}
+          <label className="tax-input-group">
+            <span>Alamat</span>
+            <div>
+              <MapPin size={18} />
+              <input
+                type="text"
+                placeholder="Masukkan alamat"
+                value={alamat}
+                onChange={(e) => setAlamat(e.target.value)}
+              />
+            </div>
+          </label>
+
+          <label className="tax-input-group">
+            <span>No HP</span>
+            <div>
+              <Phone size={18} />
+              <input
+                type="text"
+                placeholder="Masukkan nomor HP"
+                value={noHp}
+                onChange={(e) => setNoHp(e.target.value)}
+              />
+            </div>
+          </label>
+
+          <button className="tax-primary-btn" type="submit" disabled={loading}>
+            {loading ? "Memproses..." : "Buat Akun"}
+            <ArrowRight size={18} />
           </button>
 
-          <p className="auth-link">
-            Sudah punya akun? <Link to="/login">Login di sini</Link>
+          <p className="tax-auth-link">
+            Sudah punya akun? <Link to="/login">Login</Link>
           </p>
         </form>
-      </div>
-    </div>
+      </motion.section>
+    </main>
   );
 }
 

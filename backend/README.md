@@ -2,27 +2,32 @@
 
 Proyek ini adalah sistem layanan masyarakat berbasis Spring Boot dan React Vite yang menyediakan fitur autentikasi, dashboard, pengelolaan data masyarakat, data kendaraan, layanan pajak kendaraan bermotor (PKB), pembayaran pajak, pengaduan masyarakat, laporan, serta bukti pembayaran.
 
-## Teknologi yang Digunakan
+## Teknologi dan Library yang Digunakan
 
-### Backend
+Untuk menjalankan proyek ini setelah di-clone, berikut adalah pustaka (library) dan spesifikasi teknologi yang digunakan:
 
-- Java 21
-- Spring Boot
-- Spring Data JPA
-- Spring Web
-- MySQL Driver
-- Lombok
+### ⚙️ Backend (Java / Spring Boot)
+- **Java 21** (JDK minimum)
+- **Spring Boot** `v4.0.6`
+- **Spring Boot Starter Web** (Untuk REST API)
+- **Spring Boot Starter Data JPA** (ORM / Interaksi dengan database)
+- **Spring Boot Starter Actuator** (Monitoring dan manajemen aplikasi)
+- **MySQL Connector/J** (Driver koneksi ke MySQL)
+- **Lombok** (Mengurangi boilerplate code seperti Getter/Setter)
 
-### Frontend
+### 🎨 Frontend (React + Vite)
+- **React** `^19.2.6` (Library UI utama)
+- **Vite** `^8.0.12` (Build tool super cepat)
+- **React Router DOM** `^7.15.1` (Manajemen navigasi/routing halaman)
+- **Axios** `^1.16.1` (Melakukan HTTP request ke REST API Backend)
+- **Lucide React** `^1.17.0` (Koleksi ikon elegan untuk UI)
+- **Framer Motion** `^12.40.0` (Library animasi untuk komponen UI interaktif seperti `TiltCard`)
+- **Recharts** `^3.8.1` (Pembuatan grafik dan chart pelaporan)
+- **Vanilla CSS** (Custom styling menggunakan Flexbox & CSS Grid)
 
-- React Vite
-- React Router DOM
-- Axios
-- CSS
+### 🗄️ Database
+- **MySQL** (Penyimpanan data relasional)
 
-### Database
-
-- MySQL
 
 ## Dokumentasi Endpoint API
 
@@ -124,9 +129,9 @@ Setelah pembayaran berhasil, status tagihan berubah menjadi `LUNAS`, metode pemb
 
 ### Backend
 
-1. Pastikan Anda telah menginstal Java dan MySQL.
+1. Pastikan Anda telah menginstal **Java 21** dan **MySQL**.
 2. Konfigurasi database pada file `application.properties` sesuai kredensial MySQL lokal.
-3. Jalankan aplikasi menggunakan Maven:
+3. Jalankan aplikasi menggunakan Maven (langkah ini akan mengunduh dan menginstal otomatis semua library backend seperti Spring Boot, JPA, dan MySQL Driver):
 
 ```bash
 ./mvnw spring-boot:run
@@ -152,7 +157,7 @@ http://localhost:8080
 cd frontend
 ```
 
-2. Install dependency:
+2. Install dependency (langkah ini akan menginstal semua library yang terdaftar di `package.json` seperti React, Vite, Axios, Framer Motion, dll):
 
 ```bash
 npm install
@@ -172,94 +177,71 @@ http://localhost:5173
 
 ## Revisi dan Penambahan Fitur
 
-Berikut perubahan yang ditambahkan pada sistem:
+Berikut perubahan yang ditambahkan pada sistem berdasarkan revisi asisten laboratorium:
 
-### 1. Login Role Otomatis
-
-**Yang diubah/ditambah:**
-
-- `AuthController.java`
-- `AuthService.java`
-- `AuthServiceImpl.java`
-- `LoginRequest.java`
-- `Login.jsx`
+### 1. Membuat Halaman Login
 
 **Penjelasan singkat:**
-Login tidak lagi memilih role manual. User hanya memasukkan email dan password, lalu backend menentukan apakah akun tersebut `ADMIN` atau `MASYARAKAT`.
+- **Yang direvisi/ditambah:** Halaman login (`Login.jsx`) dan alur autentikasi.
+- **Detail:** Role pengguna tidak ditentukan sendiri oleh user saat registrasi maupun login, tetapi ditentukan oleh admin melalui dashboard/admin panel. Form login kini hanya meminta email dan password, lalu sistem yang menentukan apakah akun tersebut masuk sebagai Admin atau Masyarakat.
 
-### 2. Halaman Registrasi
+**Alur Login:**
+```mermaid
+flowchart LR
+    A[User] --> B[Input Email & Password]
+    B --> C{Sistem Cek Role<br>Ditetapkan Admin}
+    C -->|Role: Admin| D[Akses Admin Dashboard]
+    C -->|Role: Masyarakat| E[Akses Masyarakat Dashboard]
+```
 
-**Yang ditambah:**
-
-- `Register.jsx`
-- Route `/register` pada `App.jsx`
-
-**Penjelasan singkat:**
-Ditambahkan halaman registrasi untuk masyarakat. User tidak memilih role saat registrasi.
-
-### 3. Pembayaran Pajak
-
-**Yang diubah/ditambah:**
-
-- `LayananPKB.java`
-- `LayananController.java`
-- `LayananService.java`
-- `LayananServiceImpl.java`
-- `TagihanPage.jsx`
+### 2. Menambahkan Fitur Pembayaran
 
 **Penjelasan singkat:**
-Masyarakat dapat membayar tagihan pajak. Setelah dibayar, status berubah menjadi `LUNAS`, serta metode pembayaran dan tanggal bayar tersimpan ke database.
+- **Yang direvisi/ditambah:** Halaman tagihan (`TagihanPage.jsx`) dan penambahan pop-up pembayaran/QRIS.
+- **Detail:** Menambahkan fitur agar masyarakat dapat langsung membayar tagihan pajak kendaraannya dari dalam aplikasi. Setelah pembayaran selesai, status tagihan otomatis berubah menjadi `LUNAS` dan masyarakat bisa melihat serta mencetak bukti pembayaran.
 
-### 4. Perbaikan Dashboard
+**Alur Pembayaran:**
+```mermaid
+flowchart LR
+    A[Masyarakat] --> B[Lihat Tagihan]
+    B --> C[Klik Tombol Bayar]
+    C --> D[Pop-up QRIS Muncul]
+    D --> E[Sistem Proses Pembayaran]
+    E --> F[Status: LUNAS & Cetak Bukti]
+```
 
-**Yang diubah:**
-
-- `AdminDashboard.jsx`
-- `MasyarakatDashboard.jsx`
-- `style.css`
-
-**Penjelasan singkat:**
-Tampilan dashboard diperbaiki agar lebih rapi, informatif, dan memiliki menu cepat sesuai role.
-
-### 5. CRUD Kendaraan
-
-**Yang diubah/ditambah:**
-
-- `Kendaraan.java`
-- `KendaraanController.java`
-- `KendaraanPage.jsx`
+### 3. Membuat Halaman Registrasi
 
 **Penjelasan singkat:**
-Admin dapat menambah, melihat, mengedit, dan menghapus kendaraan. Admin juga dapat memilih pemilik kendaraan dari data masyarakat.
+- **Yang direvisi/ditambah:** Halaman registrasi baru (`Register.jsx`) dan route pendaftaran.
+- **Detail:** Menambahkan halaman agar masyarakat bisa membuat akun mereka sendiri. Pada form registrasi ini, user tidak perlu/tidak bisa menentukan role sendiri.
 
-### 6. Bukti Pembayaran
+**Alur Registrasi:**
+```mermaid
+flowchart LR
+    A[User Baru] --> B[Isi Form Registrasi]
+    B --> C[Sistem Proses Data]
+    C --> D[Akun Tersimpan<br>Role: MASYARAKAT]
+    D --> E[Masuk ke Halaman Login]
+```
 
-**Yang diubah/ditambah:**
-
-- `TagihanPage.jsx`
-- `style.css`
-
-**Penjelasan singkat:**
-Setelah tagihan lunas, sistem menampilkan tombol cetak bukti pembayaran. Bukti dapat dicetak atau disimpan sebagai PDF melalui fitur print browser.
-
-### 7. Proteksi Route Berdasarkan Role
-
-**Yang ditambah/diubah:**
-
-- `ProtectedRoute.jsx`
-- `App.jsx`
+### 4. Memperbaiki Tampilan dan Fungsi Dashboard
 
 **Penjelasan singkat:**
-Halaman admin hanya dapat diakses oleh admin. Halaman masyarakat hanya dapat diakses oleh masyarakat. User yang belum login diarahkan ke halaman login.
+- **Yang direvisi/ditambah:** Desain antarmuka (UI) untuk `AdminDashboard.jsx`, `MasyarakatDashboard.jsx`, serta penambahan komponen animasi (seperti `TiltCard.jsx`).
+- **Detail:** Tampilan dashboard dirombak total menjadi lebih premium, interaktif, rapi, dan modern. Fungsi menu navigasi dan ringkasan data juga dioptimalkan agar berjalan dengan lancar sesuai role pengguna.
 
-### 8. Jatuh Tempo dan Denda Otomatis
-
-**Yang diubah/ditambah:**
-
-- `LayananPKB.java`
-- `LayananServiceImpl.java`
-- `TagihanPage.jsx`
-- Kolom database: `jatuh_tempo`, `denda`
-
-**Penjelasan singkat:**
-Admin menentukan tanggal jatuh tempo. Sistem menghitung denda otomatis sebesar Rp50.000 per bulan keterlambatan jika pembayaran melewati jatuh tempo.
+**Struktur Dashboard UI Baru:**
+```mermaid
+graph TD
+    A[Premium Dashboard UI] --> B[Admin Dashboard]
+    A --> C[Masyarakat Dashboard]
+    
+    B --> B1[Menu Manajemen Warga & Admin]
+    B --> B2[Menu Kendaraan Warga]
+    B --> B3[Manajemen Tagihan PKB]
+    
+    C --> C1[Lihat Data Diri & Kendaraan]
+    C --> C2[Lihat Tagihan & Bayar Pajak]
+    C --> C3[Riwayat & Layanan Lainnya]
+```

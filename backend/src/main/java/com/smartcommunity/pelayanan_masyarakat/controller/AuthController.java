@@ -5,7 +5,11 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.smartcommunity.pelayanan_masyarakat.dto.LoginRequest;
 import com.smartcommunity.pelayanan_masyarakat.model.Admin;
@@ -61,17 +65,6 @@ public class AuthController {
     public ResponseEntity<Pengguna> registerWarga(@RequestBody Pengguna pengguna) {
         Pengguna wargaBaru = authService.registerPengguna(pengguna);
         return new ResponseEntity<>(wargaBaru, HttpStatus.CREATED);
-    }
-
-    // =========================
-    // REGISTER ADMIN
-    // =========================
-    // Endpoint ini sebaiknya hanya dipakai admin/sistem,
-    // bukan ditampilkan bebas ke user biasa.
-    @PostMapping("/register/admin")
-    public ResponseEntity<Admin> registerAdmin(@RequestBody Admin admin) {
-        Admin adminBaru = authService.registerAdmin(admin);
-        return new ResponseEntity<>(adminBaru, HttpStatus.CREATED);
     }
 
     // =========================
