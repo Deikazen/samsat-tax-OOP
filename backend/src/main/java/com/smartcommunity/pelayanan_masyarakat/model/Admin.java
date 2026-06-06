@@ -23,7 +23,10 @@ public class Admin extends Akun {
     // Implementasi method abstract (Polymorphism)
     @Override
     public boolean login() {
-        System.out.println("Login sebagai Administrator sistem...");
+        this.setLastLogin(java.time.LocalDateTime.now());
+        this.setLoginCount((this.getLoginCount() == null ? 0 : this.getLoginCount()) + 1);
+        System.out.println(">>> [AUDIT LOG]: Administrator " + getNama() + " (NIP: " + nip + ") logged in successfully.");
+        System.out.println("    Login Count: " + this.getLoginCount() + " | Timestamp: " + this.getLastLogin());
         return true;
     }
 }

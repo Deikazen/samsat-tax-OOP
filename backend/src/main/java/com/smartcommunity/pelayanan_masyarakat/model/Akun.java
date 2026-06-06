@@ -36,6 +36,12 @@ public abstract class Akun {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
+
+    @Column(name = "login_count")
+    private Integer loginCount = 0;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -88,5 +94,21 @@ public abstract class Akun {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Integer getLoginCount() {
+        return loginCount;
+    }
+
+    public void setLoginCount(Integer loginCount) {
+        this.loginCount = loginCount;
     }
 }

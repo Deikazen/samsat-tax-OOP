@@ -1,6 +1,7 @@
 package com.smartcommunity.pelayanan_masyarakat.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.smartcommunity.pelayanan_masyarakat.exception.DataTidakDitemukanException;
 import com.smartcommunity.pelayanan_masyarakat.model.Admin;
@@ -10,6 +11,7 @@ import com.smartcommunity.pelayanan_masyarakat.repository.AkunRepository;
 import com.smartcommunity.pelayanan_masyarakat.service.AuthService;
 
 @Service
+@Transactional
 public class AuthServiceImpl implements AuthService {
 
     private final AkunRepository akunRepo;
@@ -31,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         akunDb.login();
-        return akunDb;
+        return akunRepo.save(akunDb);
     }
 
     @Override
@@ -60,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         akunDb.login();
-        return (Pengguna) akunDb;
+        return (Pengguna) akunRepo.save(akunDb);
     }
 
     // Login lama untuk admin.
@@ -79,6 +81,6 @@ public class AuthServiceImpl implements AuthService {
         }
 
         akunDb.login();
-        return (Admin) akunDb;
+        return (Admin) akunRepo.save(akunDb);
     }
 }

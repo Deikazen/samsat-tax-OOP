@@ -78,7 +78,29 @@ public class Pengguna extends Akun {
     // Implementasi method abstract (Polymorphism)
     @Override
     public boolean login() {
-        System.out.println("Login sebagai pengguna warga masyarakat...");
+        this.setLastLogin(java.time.LocalDateTime.now());
+        this.setLoginCount((this.getLoginCount() == null ? 0 : this.getLoginCount()) + 1);
+        System.out.println(">>> [LOG]: Warga " + getNama() + " (NIK: " + nik + ") logged in.");
+        System.out.println("    Login Count: " + this.getLoginCount() + " | Timestamp: " + this.getLastLogin());
+        
+        // Logika bisnis tambahan: mengecek status pengaduan dan kendaraan pengguna
+        try {
+            int totalPengaduan = (this.listPengaduan != null) ? this.listPengaduan.size() : 0;
+            long pengaduanMenunggu = (this.listPengaduan != null)
+                ? this.listPengaduan.stream().filter(p -> "MENUNGGU".equals(p.getStatus())).count()
+                : 0;
+            System.out.println("    [INFO PENGADUAN] Total Pengaduan: " + totalPengaduan + " | Menunggu Tanggapan: " + pengaduanMenunggu);
+        } catch (Exception e) {
+            System.out.println("    [INFO PENGADUAN] Data pengaduan belum dimuat (Lazy Load).");
+        }
+
+        try {
+            int totalKendaraan = (this.listKendaraan != null) ? this.listKendaraan.size() : 0;
+            System.out.println("    [INFO KENDARAAN] Jumlah Kendaraan Terdaftar: " + totalKendaraan);
+        } catch (Exception e) {
+            System.out.println("    [INFO KENDARAAN] Data kendaraan belum dimuat (Lazy Load).");
+        }
+
         return true;
     }
 }
