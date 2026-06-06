@@ -117,6 +117,19 @@ function Navbar() {
       .join("");
   };
 
+  const formatTanggalWaktu = (value) => {
+    if (!value) return "-";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "-";
+    return new Intl.DateTimeFormat("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(date);
+  };
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
     setShowSearchResult(true);
@@ -297,6 +310,17 @@ function Navbar() {
               <div className="tax-profile-role">
                 <ShieldCheck size={16} />
                 {isAdmin ? "Akses Administrator" : "Akun Masyarakat"}
+              </div>
+
+              <div className="tax-profile-login-info" style={{ padding: "12px 16px", fontSize: "0.75rem", color: "#64748b", borderTop: "1px solid #f1f5f9", borderBottom: "1px solid #f1f5f9" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                  <span>Login Terakhir:</span>
+                  <strong style={{ color: "#334155" }}>{formatTanggalWaktu(user?.lastLogin)}</strong>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span>Jumlah Login:</span>
+                  <strong style={{ color: "#334155" }}>{user?.loginCount || 1} kali</strong>
+                </div>
               </div>
 
               <button

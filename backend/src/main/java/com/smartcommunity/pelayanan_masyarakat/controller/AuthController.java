@@ -42,6 +42,8 @@ public class AuthController {
         response.put("id", akunLogin.getId());
         response.put("nama", akunLogin.getNama());
         response.put("email", akunLogin.getEmail());
+        response.put("lastLogin", akunLogin.getLastLogin());
+        response.put("loginCount", akunLogin.getLoginCount());
 
         if (akunLogin instanceof Admin admin) {
             response.put("role", "ADMIN");

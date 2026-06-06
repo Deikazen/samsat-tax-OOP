@@ -335,6 +335,16 @@ function MasyarakatDashboard() {
                 <span>NIK</span>
                 <strong>{user?.nik || "-"}</strong>
               </div>
+
+              <div className="citizen-v2-profile-info" style={{ marginTop: "12px" }}>
+                <span>Login Terakhir</span>
+                <strong>{formatTanggalWaktu(user?.lastLogin)}</strong>
+              </div>
+
+              <div className="citizen-v2-profile-info">
+                <span>Total Login</span>
+                <strong>{user?.loginCount || 1} kali</strong>
+              </div>
             </TiltCard>
           </motion.section>
 
